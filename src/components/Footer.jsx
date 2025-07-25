@@ -101,7 +101,7 @@ const Footer = () => {
 				</div>
 
 				{/* Right Text Column */}
-				<div className=' flex flex-col items-end  text-right gap-2'>
+				<div className=' flex flex-col items-center  text-center gap-2 justify-center sm:justify-end sm:items-end sm:text-right'>
 					<a href='#privacy-policy' className='text-gray-400 hover:underline'>
 						Privacy Policy
 					</a>
@@ -109,14 +109,16 @@ const Footer = () => {
 						© 2025 SCR Gaming. All rights reserved.
 					</p>
 					{showGitHubStar && (
-						<a
-							href='https://github.com/SCR01/scr-game'
-							target='_blank'
-							rel='noopener noreferrer'
-							className='  inline-flex items-center gap-2 bg-neutral-800 text-zinc-100 px-4 py-1.5 rounded-lg font-semibold shadow hover:bg-neutral-700 transition'
-						>
-							⭐ Star on GitHub
-						</a>
+						<div className='w-full flex justify-center sm:justify-end'>
+							<a
+								href='https://github.com/SCR01/scr-game'
+								target='_blank'
+								rel='noopener noreferrer'
+								className='inline-flex items-center gap-2 bg-neutral-800 text-zinc-100 px-4 py-1.5 rounded-lg font-semibold shadow hover:bg-neutral-700 transition'
+							>
+								⭐ Star on GitHub
+							</a>
+						</div>
 					)}
 				</div>
 			</div>
