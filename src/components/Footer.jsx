@@ -41,8 +41,8 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer ref={footerRef} className="w-full bg-[#0f0f1c] text-white py-10 px-6 md:px-16">
-      <div className="container mx-auto grid gap-10 md:grid-cols-3 items-start">
+    <footer ref={footerRef} className="w-full bg-[#0f0f1c] text-white py-12 px-6 md:px-16">
+      <div className="container mx-auto grid gap-12 md:grid-cols-3 items-start">
         {/* Logo and Tagline */}
         <div className="flex flex-col items-start gap-3">
           <div className="flex items-center gap-3">
@@ -54,13 +54,15 @@ const Footer = () => {
             />
             <span className="text-2xl font-semibold">SCR Gaming</span>
           </div>
-          <p className="text-sm text-gray-400">Made with ❤️ using React, GSAP & Tailwind CSS</p>
+          <p className="text-sm text-gray-400">
+            Made with ❤️ using React, GSAP & Tailwind CSS
+          </p>
         </div>
 
-        {/* Social Icons + GitHub Star */}
-        <div className="flex flex-col items-center md:items-center gap-4">
-          <p className="text-sm text-gray-400">Connect with us:</p>
-          <div className="flex gap-5 text-2xl">
+        {/* Social + Star Button */}
+        <div className="flex flex-col items-center gap-5 text-center">
+          <p className="text-sm text-gray-400">Follow us on:</p>
+          <div className="flex gap-6 text-2xl">
             {socialLinks.map((link, index) => (
               <a
                 key={index}
@@ -74,27 +76,24 @@ const Footer = () => {
             ))}
           </div>
 
-          {/* GitHub Star Button */}
           {showGitHubStar && (
-            <div className="mt-2">
-              <a
-                href="https://github.com/SCR01/scr-game"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center gap-2 bg-white text-black px-4 py-1.5 rounded-lg font-semibold shadow hover:bg-[#e5e5e5] transition"
-              >
-                ⭐ Star on GitHub
-              </a>
-            </div>
+            <a
+              href="https://github.com/SCR01/scr-game"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#DFDFF0] text-black px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-200 transition"
+            >
+              ⭐ Star on GitHub
+            </a>
           )}
         </div>
 
-        {/* Right Text Column */}
-        <div className="flex flex-col items-end text-sm text-right gap-2">
-          <a href="#privacy-policy" className="text-gray-400 hover:underline">
+        {/* Legal Info */}
+        <div className="flex flex-col md:items-end items-center text-sm text-gray-400 gap-2 text-center md:text-right">
+          <a href="#privacy-policy" className="hover:underline">
             Privacy Policy
           </a>
-          <p className="text-gray-400">© 2025 SCR Gaming. All rights reserved.</p>
+          <p>© 2025 SCR Gaming. All rights reserved.</p>
         </div>
       </div>
     </footer>
