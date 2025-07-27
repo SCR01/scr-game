@@ -6,6 +6,9 @@ import Features from './components/Features'
 import GamesGallery from './components/GamesGallery'
 import Story from './components/Story'
 import Contact from './components/Contact'
+import Nexus from './components/Nexus'
+import Vault from './components/Vault'
+import Prologue from './components/Prologue'
 import Footer from './components/Footer'
 import CursorTrail from "./components/CursorTrail/CursorTrail";
 
@@ -19,6 +22,9 @@ const App = () => {
     <Features/>
     <GamesGallery/>
     <Story/>
+    <Nexus/>
+    <Vault/>
+    <Prologue/>
     <Contact/>
     <Footer/>
 
