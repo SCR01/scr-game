@@ -15,17 +15,26 @@ export const GameProvider = ({ children }) => {
   const [wishlistItems, setWishlistItems] = useState([]);
 
   // Load from localStorage on mount
-  useEffect(() => {
+useEffect(() => {
+  try {
     const savedCart = localStorage.getItem('gameCart');
-    const savedWishlist = localStorage.getItem('gameWishlist');
-    
     if (savedCart) {
       setCartItems(JSON.parse(savedCart));
     }
+  } catch (err) {
+    console.warn("Error parsing gameCart from localStorage", err);
+  }
+
+  try {
+    const savedWishlist = localStorage.getItem('gameWishlist');
     if (savedWishlist) {
       setWishlistItems(JSON.parse(savedWishlist));
     }
-  }, []);
+  } catch (err) {
+    console.warn("Error parsing gameWishlist from localStorage", err);
+  }
+}, []);
+
 
   // Save to localStorage whenever state changes
   useEffect(() => {
