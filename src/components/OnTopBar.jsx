@@ -3,9 +3,10 @@ import { ArrowBigUp } from "lucide-react";
 import Styled from "styled-components";
 
 const OnTopBar = () => {
-const [isvisible, setIsVisible] = React.useState(false);
+  const [isvisible, setIsVisible] = React.useState(false);
+  const [scrollProgress, setScrollProgress] = React.useState(0);
   
-const onTopbtn = () => {
+  const onTopbtn = () => {
     window.scrollTo({
       top: 0,
       left: 0,
@@ -13,44 +14,60 @@ const onTopbtn = () => {
     });
   };
 
-  // Define the scroll event handler function *****
+  // Updated scroll handler to calculate progress
   const handleScroll = () => {
-    document.querySelector(".on-top-bar") 
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    
+    setScrollProgress(scrolled);
+    
     if (window.scrollY > 100) {
-       setIsVisible(true);
+      setIsVisible(true);
     } else {
-        setIsVisible(false);
+      setIsVisible(false);
     }
-  }
+  };
 
-  // Render the component AS useEffect 
-useEffect(() => {
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   return (
     <Container>
-        { isvisible && (
-      <div className="on-top-bar" onClick={onTopbtn}>
-        <ArrowBigUp />
-      </div>
-        )
-}
+      <div className="progress-bar" style={{ width: `${scrollProgress}%` }} />
+      {isvisible && (
+        <div className="on-top-bar" onClick={onTopbtn}>
+          <ArrowBigUp />
+        </div>
+      )}
     </Container>
   );
 };
 
 const Container = Styled.section`
-   display: flex;
-   justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 
-.on-top-bar {
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: #00abff;
+    transition: width 0.2s ease-in-out;
+    z-index: 1000;
+  }
+
+  .on-top-bar {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 18px;
     background-color: #fff;
     color: #1a1a1a;
     border-radius: 50%;
@@ -62,14 +79,11 @@ const Container = Styled.section`
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
- 
 
     &:hover {
-        background-color: #0039df;
+      background-color: #0039ff;
     }
- 
-}
-
+  }
 `;
 
 export default OnTopBar;
