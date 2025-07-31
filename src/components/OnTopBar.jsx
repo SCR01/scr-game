@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { ArrowBigUp } from "lucide-react";
 import Styled from "styled-components";
+import { Weight } from "lucide-react";
 
 const OnTopBar = () => {
   const [isvisible, setIsVisible] = React.useState(false);
@@ -16,7 +17,7 @@ const OnTopBar = () => {
 
   // Updated scroll handler to calculate progress
   const handleScroll = () => {
-    const winScroll = document.documentElement.scrollTop;
+    const winScroll =  document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (winScroll / height) * 100;
     
@@ -58,10 +59,12 @@ const Container = Styled.section`
     position: fixed;
     top: 0;
     left: 0;
-    height: 4px;
+    height: 2px;
     background: #00abff;
-    transition: width 0.2s ease-in-out;
-    z-index: 1000;
+    
+
+   
+  
   }
 
   .on-top-bar {
