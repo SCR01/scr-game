@@ -1,4 +1,3 @@
-import React from 'react'
 import Hero from './components/Hero'
 import About from './components/About'
 import Navbar from './components/Navbar'
@@ -10,6 +9,7 @@ import Footer from './components/Footer'
 import CursorTrail from "./components/CursorTrail/CursorTrail";
 import CartWishlist from './components/CartWishlist'
 import { GameProvider } from './context/GameContext'
+import OnTopBar from './components/OnTopBar'
 
 const App = () => {
   return (
@@ -27,6 +27,7 @@ const App = () => {
         </div>
         <Contact/>
         <Footer/>
+        <OnTopBar />
       </main>
     </GameProvider>
   )
