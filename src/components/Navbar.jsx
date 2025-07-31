@@ -11,7 +11,7 @@ const navItems = [
   { name: "Vault", href: "#features" },
   { name: "Prologue", href: "#story" },
   { name: "About", href: "#about" },
-  { name: "Contact", href: "#contact" },
+  { name: "Contact Us", href: "#contact" },
 ];
 
 const Navbar = () => {
