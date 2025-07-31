@@ -1,0 +1,17 @@
+.header {
+  background: #111;
+  padding: 1rem;
+}
+.nav-list {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-list a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+.nav-list a:hover {
+  text-decoration: underline;
+}
