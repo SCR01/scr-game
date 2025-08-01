@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react";
@@ -10,28 +10,149 @@ import { useGame } from '../context/GameContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Cart Item Component (same as before)
+// --- Card Tilt Effect Hook ---
+const useCardTilt = (ref) => {
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const element = ref.current;
+
+    const onMouseMove = e => {
+      const rect = element.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+
+      const rotateX = (py - 0.5) * 10;
+      const rotateY = (px - 0.5) * 10;
+
+      gsap.to(element, {
+        rotationX: rotateX,
+        rotationY: rotateY,
+        transformPerspective: 600,
+        transformOrigin: "center",
+        ease: "power1.out",
+        duration: 0.3,
+      });
+    };
+
+    const onMouseLeave = () => {
+      gsap.to(element, {
+        rotationX: 0,
+        rotationY: 0,
+        ease: "power2.out",
+        duration: 0.6,
+      });
+    };
+
+    element.addEventListener('mousemove', onMouseMove);
+    element.addEventListener('mouseleave', onMouseLeave);
+
+    return () => {
+      element.removeEventListener('mousemove', onMouseMove);
+      element.removeEventListener('mouseleave', onMouseLeave);
+      gsap.set(element, { rotationX: 0, rotationY: 0 }); // reset on unmount
+    };
+  }, [ref]);
+};
+
+// --- Animated Badge (pop effect on count change)---
+const AnimatedBadge = ({ count }) => {
+  const badgeRef = useRef(null);
+
+  useEffect(() => {
+    if (badgeRef.current) {
+      gsap.fromTo(
+        badgeRef.current,
+        { scale: 1 },
+        { scale: 1.3, duration: 0.2, yoyo: true, repeat: 1, ease: "power1.inOut" }
+      );
+    }
+  }, [count]);
+
+  return (
+    <span
+      ref={badgeRef}
+      className="ml-1 inline-block rounded-full bg-yellow-500 text-black font-bold text-xs px-2 py-0.5"
+    >
+      {count}
+    </span>
+  );
+};
+
+// --- Cart Item Component ---
 const CartItem = ({ item, onRemove, onMoveToWishlist }) => {
-  // ...existing code from Cart.jsx CartItem component...
-  const [hoverOpacity, setHoverOpacity] = useState(0);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const hoverButtonRef = useRef(null);
+  const cardRef = useRef(null);
+  const moveBtnRef = useRef(null);
+  const delBtnRef = useRef(null);
 
-  const handleMouseMove = (event) => {
-    if (!hoverButtonRef.current) return;
-    const rect = hoverButtonRef.current.getBoundingClientRect();
+  useCardTilt(cardRef);
 
-    setCursorPosition({
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
+  useEffect(() => {
+    if (cardRef.current) {
+      const index = parseInt(cardRef.current.getAttribute('data-index'), 10) || 0;
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 40, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          delay: index * 0.12,
+          ease: "power2.out",
+          clearProps: "transform"
+        }
+      );
+    }
+  }, []);
+
+  const microPop = (ref) => {
+    gsap.fromTo(
+      ref.current,
+      { scale: 1 },
+      { scale: 1.25, yoyo: true, repeat: 1, duration: 0.14, ease: "power1.inOut" }
+    );
+  };
+
+  const handleRemoveClick = () => {
+    microPop(delBtnRef);
+    gsap.to(cardRef.current, {
+      opacity: 0,
+      scale: 0.85,
+      duration: 0.35,
+      ease: "power2.in",
+      onComplete: () => onRemove(item.id),
     });
   };
 
-  const handleMouseEnter = () => setHoverOpacity(1);
-  const handleMouseLeave = () => setHoverOpacity(0);
+  const handleMoveToWishlist = () => {
+    microPop(moveBtnRef);
+    onMoveToWishlist(item.id);
+  };
 
   return (
-    <div className="border-hsla bg-black backdrop-blur-sm rounded-xl p-3 md:p-6 mb-4 md:mb-6 transition-all duration-300 hover:bg-black/90">
+    <div
+      ref={cardRef}
+      data-index={item.index}
+      className="border-hsla bg-black backdrop-blur-sm rounded-xl p-3 md:p-6 mb-4 md:mb-6 transition-all duration-300 hover:bg-black/90 relative cursor-pointer"
+      style={{ willChange: "transform, box-shadow" }}
+      onMouseEnter={() => {
+        gsap.to(cardRef.current, {
+          scale: 1.035,
+          boxShadow: "0 8px 32px #8ec62c77, 0 0 0 2px #8ec62c77",
+          duration: 0.28,
+          ease: "power2.out"
+        });
+      }}
+      onMouseLeave={() => {
+        gsap.to(cardRef.current, {
+          scale: 1,
+          boxShadow: "0 2px 8px #0004",
+          duration: 0.33,
+          ease: "power2.inOut"
+        });
+      }}
+    >
       <div className="flex gap-3 md:gap-6">
         <div className="w-20 h-16 sm:w-24 sm:h-18 md:w-32 md:h-20 lg:w-40 lg:h-24 rounded-lg overflow-hidden flex-shrink-0">
           <img
@@ -52,7 +173,6 @@ const CartItem = ({ item, onRemove, onMoveToWishlist }) => {
                   {item.title}
                 </h3>
               </div>
-              
               {item.discount && (
                 <div className="text-right flex-shrink-0">
                   <span className="bg-yellow-600 text-white px-2 py-1 rounded text-xs font-bold">
@@ -88,7 +208,8 @@ const CartItem = ({ item, onRemove, onMoveToWishlist }) => {
 
             <div className="flex items-center gap-2 md:gap-3">
               <button
-                onClick={() => onMoveToWishlist(item.id)}
+                ref={moveBtnRef}
+                onClick={handleMoveToWishlist}
                 className="flex items-center gap-1 text-yellow-300 hover:text-yellow-200 transition-colors duration-200 text-xs md:text-sm font-nippo-light uppercase"
               >
                 <TiHeart className="text-sm md:text-base" />
@@ -96,7 +217,8 @@ const CartItem = ({ item, onRemove, onMoveToWishlist }) => {
                 <span className="sm:hidden">Wishlist</span>
               </button>
               <button
-                onClick={() => onRemove(item.id)}
+                ref={delBtnRef}
+                onClick={handleRemoveClick}
                 className="flex items-center gap-1 text-gray-400 hover:text-red-400 transition-colors duration-200 text-xs md:text-sm font-nippo-light uppercase"
               >
                 <TiTrash className="text-sm md:text-base" />
@@ -111,28 +233,80 @@ const CartItem = ({ item, onRemove, onMoveToWishlist }) => {
   );
 };
 
-// Wishlist Item Component (same as before)
+// --- Wishlist Item Component ---
 const WishlistItem = ({ item, onRemove, onMoveToCart }) => {
-  // ...existing code from Wishlist.jsx WishlistItem component...
-  const [hoverOpacity, setHoverOpacity] = useState(0);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const hoverButtonRef = useRef(null);
+  const cardRef = useRef(null);
+  const moveBtnRef = useRef(null);
+  const delBtnRef = useRef(null);
 
-  const handleMouseMove = (event) => {
-    if (!hoverButtonRef.current) return;
-    const rect = hoverButtonRef.current.getBoundingClientRect();
+  useCardTilt(cardRef);
 
-    setCursorPosition({
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
+  useEffect(() => {
+    if (cardRef.current) {
+      const index = parseInt(cardRef.current.getAttribute('data-index'), 10) || 0;
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 40, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          delay: index * 0.12,
+          ease: "power2.out",
+          clearProps: "transform"
+        }
+      );
+    }
+  }, []);
+
+  const microPop = (ref) => {
+    gsap.fromTo(
+      ref.current,
+      { scale: 1 },
+      { scale: 1.25, yoyo: true, repeat: 1, duration: 0.14, ease: "power1.inOut" }
+    );
+  };
+
+  const handleRemoveClick = () => {
+    microPop(delBtnRef);
+    gsap.to(cardRef.current, {
+      opacity: 0,
+      scale: 0.85,
+      duration: 0.35,
+      ease: "power2.in",
+      onComplete: () => onRemove(item.id),
     });
   };
 
-  const handleMouseEnter = () => setHoverOpacity(1);
-  const handleMouseLeave = () => setHoverOpacity(0);
+  const handleMoveToCart = () => {
+    microPop(moveBtnRef);
+    onMoveToCart(item.id);
+  };
 
   return (
-    <BentoTilt className="border-hsla bg-black backdrop-blur-sm rounded-xl p-3 md:p-6 mb-4 md:mb-6 transition-all duration-300 hover:bg-black/90">
+    <BentoTilt
+      ref={cardRef}
+      data-index={item.index}
+      className="border-hsla bg-black backdrop-blur-sm rounded-xl p-3 md:p-6 mb-4 md:mb-6 transition-all duration-300 hover:bg-black/90 relative cursor-pointer"
+      style={{ willChange: "transform, box-shadow" }}
+      onMouseEnter={() => {
+        gsap.to(cardRef.current, {
+          scale: 1.035,
+          boxShadow: "0 8px 32px #256df755, 0 0 0 2px #256df799",
+          duration: 0.28,
+          ease: "power2.out"
+        });
+      }}
+      onMouseLeave={() => {
+        gsap.to(cardRef.current, {
+          scale: 1,
+          boxShadow: "0 2px 8px #0004",
+          duration: 0.33,
+          ease: "power2.inOut"
+        });
+      }}
+    >
       <div className="flex gap-3 md:gap-6">
         <div className="w-20 h-16 sm:w-24 sm:h-18 md:w-32 md:h-20 lg:w-40 lg:h-24 rounded-lg overflow-hidden flex-shrink-0">
           <img
@@ -141,7 +315,6 @@ const WishlistItem = ({ item, onRemove, onMoveToCart }) => {
             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           />
         </div>
-
         <div className="flex-1 flex flex-col justify-between min-w-0">
           <div>
             <div className="flex items-start justify-between mb-2">
@@ -153,7 +326,6 @@ const WishlistItem = ({ item, onRemove, onMoveToCart }) => {
                   {item.title}
                 </h3>
               </div>
-              
               {item.rating && (
                 <div className="text-right flex-shrink-0">
                   <span className="text-yellow-300 text-xs md:text-sm">⭐ {item.rating}</span>
@@ -176,7 +348,8 @@ const WishlistItem = ({ item, onRemove, onMoveToCart }) => {
             <div className="flex items-center gap-2 md:gap-3">
               {item.price && (
                 <button
-                  onClick={() => onMoveToCart(item.id)}
+                  ref={moveBtnRef}
+                  onClick={handleMoveToCart}
                   className="flex items-center gap-1 text-yellow-300 hover:text-yellow-200 transition-colors duration-200 text-xs md:text-sm font-nippo-light uppercase"
                 >
                   <TiShoppingCart className="text-sm md:text-base" />
@@ -185,7 +358,8 @@ const WishlistItem = ({ item, onRemove, onMoveToCart }) => {
                 </button>
               )}
               <button
-                onClick={() => onRemove(item.id)}
+                ref={delBtnRef}
+                onClick={handleRemoveClick}
                 className="flex items-center gap-1 text-gray-400 hover:text-red-400 transition-colors duration-200 text-xs md:text-sm font-nippo-light uppercase"
               >
                 <TiTrash className="text-sm md:text-base" />
@@ -200,9 +374,8 @@ const WishlistItem = ({ item, onRemove, onMoveToCart }) => {
   );
 };
 
-// Order Summary Component (same as before)
+// --- Order Summary (unchanged) ---
 const OrderSummary = ({ items, onCheckout }) => {
-  // ...existing code from Cart.jsx OrderSummary component...
   const [hoverOpacity, setHoverOpacity] = useState(0);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const hoverButtonRef = useRef(null);
@@ -218,7 +391,6 @@ const OrderSummary = ({ items, onCheckout }) => {
   const handleMouseMove = (event) => {
     if (!hoverButtonRef.current) return;
     const rect = hoverButtonRef.current.getBoundingClientRect();
-
     setCursorPosition({
       x: event.clientX - rect.left,
       y: event.clientY - rect.top,
@@ -239,21 +411,21 @@ const OrderSummary = ({ items, onCheckout }) => {
           <span className="font-nippo-light text-sm md:text-base">Price</span>
           <span className="font-nippo-light text-sm md:text-base">₹{(subtotal + discount).toFixed(2)}</span>
         </div>
-        
+
         {discount > 0 && (
           <div className="flex justify-between text-green-400">
             <span className="font-nippo-light text-sm md:text-base">Sale Discount</span>
             <span className="font-nippo-light text-sm md:text-base">-₹{discount.toFixed(2)}</span>
           </div>
         )}
-        
+
         <div className="flex justify-between text-white">
           <span className="font-nippo-light text-sm md:text-base">Taxes</span>
           <span className="font-nippo-light text-xs md:text-sm">Calculated at Checkout</span>
         </div>
-        
+
         <hr className="border-gray-600" />
-        
+
         <div className="flex justify-between text-white font-bold text-base md:text-lg">
           <span className="font-zentry">Subtotal</span>
           <span className="font-zentry">₹{subtotal.toFixed(2)}</span>
@@ -283,10 +455,21 @@ const OrderSummary = ({ items, onCheckout }) => {
   );
 };
 
-// Main Combined Component
+// --- Main Combined Component ---
 const CartWishlist = () => {
   const [activeTab, setActiveTab] = useState('cart');
-  const { cartItems, wishlistItems, removeFromCart, removeFromWishlist, moveToWishlistFromCart, moveToCartFromWishlist } = useGame();
+  const {
+    cartItems,
+    wishlistItems,
+    removeFromCart,
+    removeFromWishlist,
+    moveToWishlistFromCart,
+    moveToCartFromWishlist,
+  } = useGame();
+
+  // Add index to items for stagger animation
+  const cartWithIndex = cartItems.map((item, i) => ({ ...item, index: i }));
+  const wishlistWithIndex = wishlistItems.map((item, i) => ({ ...item, index: i }));
 
   const handleCheckout = () => {
     console.log("Proceeding to checkout with items:", cartItems);
@@ -296,14 +479,14 @@ const CartWishlist = () => {
   const scrollToGamesGallery = () => {
     const gamesSection = document.getElementById('games-gallery');
     if (gamesSection) {
-      gamesSection.scrollIntoView({ 
+      gamesSection.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
     }
   };
 
-  // GSAP Animations
+  // GSAP page-wide triggers
   useGSAP(() => {
     gsap.from(".cart-wishlist-title", {
       scrollTrigger: {
@@ -317,59 +500,43 @@ const CartWishlist = () => {
       duration: 1,
       ease: "power2.out",
     });
-
-    gsap.from(".cart-wishlist-item", {
-      scrollTrigger: {
-        trigger: ".cart-wishlist-section",
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse",
-      },
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power2.out",
-    });
   });
 
   return (
-    <section id="cart-wishlist" className="bg-yellow-75 py-20 md:py-32 min-h-screen">
+    <section id="cart-wishlist" className="bg-yellow-75 py-20 md:py-32 min-h-screen relative">
       <div className="container mx-auto px-5 md:px-10">
         {/* Header with Navigation */}
         <div className="cart-wishlist-title mb-16">
-          <div className="flex items-center justify-center mb-8">
+          <div className="flex items-center justify-center mb-8 relative">
             <div className="relative flex bg-white/10 backdrop-blur-sm rounded-full p-1 border border-black/20">
-              {/* Sliding background indicator */}
-              <div 
+              <div
                 className={`absolute top-1 bottom-1 bg-black rounded-full shadow-lg transition-all duration-300 ease-out ${
                   activeTab === 'cart' ? 'left-1 right-1/2' : 'left-1/2 right-1'
                 }`}
               />
-              
               <button
                 onClick={() => setActiveTab('cart')}
                 className={`relative px-6 py-3 rounded-full font-nippo-light text-sm uppercase font-bold transition-all duration-300 z-10 ${
-                  activeTab === 'cart' 
-                    ? 'text-white' 
+                  activeTab === 'cart'
+                    ? 'text-white'
                     : 'text-black hover:text-black/80'
                 }`}
               >
-                CART ({cartItems.length})
+                CART <AnimatedBadge count={cartItems.length} />
               </button>
               <button
                 onClick={() => setActiveTab('wishlist')}
                 className={`relative px-6 py-3 rounded-full font-nippo-light text-sm uppercase font-bold transition-all duration-300 z-10 ${
-                  activeTab === 'wishlist' 
-                    ? 'text-white' 
+                  activeTab === 'wishlist'
+                    ? 'text-white'
                     : 'text-black hover:text-black/80'
                 }`}
               >
-                WISHLIST ({wishlistItems.length})
+                WISHLIST <AnimatedBadge count={wishlistItems.length} />
               </button>
             </div>
           </div>
-          
+
           <AnimatedTitle
             title={activeTab === 'cart' ? "<b>M</b>y <b>Cart</b>" : "<b>M</b>y Wi<b>s</b>hlist"}
             containerClass="!text-black text-center"
@@ -379,8 +546,7 @@ const CartWishlist = () => {
         {/* Content based on active tab */}
         <div className="cart-wishlist-section">
           {activeTab === 'cart' ? (
-            // Cart Content
-            cartItems.length === 0 ? (
+            cartWithIndex.length === 0 ? (
               <BentoTilt className="border-hsla bento-tilt_2 bg-black backdrop-blur-sm rounded-xl p-12 text-center">
                 <h3 className="font-zentry font-black text-3xl text-white mb-4 special-font">
                   Your cart is <b>empty</b>
@@ -399,7 +565,7 @@ const CartWishlist = () => {
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="lg:col-span-1">
-                  {cartItems.map((item) => (
+                  {cartWithIndex.map((item) => (
                     <div key={item.id} className="cart-wishlist-item">
                       <CartItem
                         item={item}
@@ -409,14 +575,13 @@ const CartWishlist = () => {
                     </div>
                   ))}
                 </div>
-                <div className="border-hsla bento-tilt_1 lg:col-span-1 ">
+                <div className="border-hsla bento-tilt_1 lg:col-span-1">
                   <OrderSummary items={cartItems} onCheckout={handleCheckout} />
                 </div>
               </div>
             )
           ) : (
-            // Wishlist Content
-            wishlistItems.length === 0 ? (
+            wishlistWithIndex.length === 0 ? (
               <BentoTilt className="border-hsla bento-tilt_2 bg-black backdrop-blur-sm rounded-xl p-12 text-center">
                 <h3 className="font-zentry font-black text-3xl text-white mb-4 special-font">
                   Your wishlist is <b>empty</b>
@@ -434,7 +599,7 @@ const CartWishlist = () => {
               </BentoTilt>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {wishlistItems.map((item) => (
+                {wishlistWithIndex.map((item) => (
                   <div key={item.id} className="cart-wishlist-item">
                     <WishlistItem
                       item={item}

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 const GameContext = createContext();
 
@@ -14,77 +15,78 @@ export const GameProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
 
-  // Load from localStorage on mount (SAFE VERSION)
+  // Load from localStorage on mount
   useEffect(() => {
-    // Safely load cart items
     try {
       const savedCart = localStorage.getItem('gameCart');
-      if (savedCart) {
-        setCartItems(JSON.parse(savedCart));
-      }
+      if (savedCart) setCartItems(JSON.parse(savedCart));
     } catch (error) {
       console.error("Failed to parse cart from localStorage:", error);
-      localStorage.removeItem('gameCart'); // Clear the corrupted item
     }
 
-    // Safely load wishlist items
     try {
       const savedWishlist = localStorage.getItem('gameWishlist');
-      if (savedWishlist) {
-        setWishlistItems(JSON.parse(savedWishlist));
-      }
+      if (savedWishlist) setWishlistItems(JSON.parse(savedWishlist));
     } catch (error) {
       console.error("Failed to parse wishlist from localStorage:", error);
-      localStorage.removeItem('gameWishlist'); // Clear the corrupted item
     }
   }, []);
 
-  // Save to localStorage whenever state changes
+  // Save cart to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('gameCart', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // Save wishlist to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('gameWishlist', JSON.stringify(wishlistItems));
   }, [wishlistItems]);
 
   const addToCart = (game) => {
-    const existingItem = cartItems.find(item => item.id === game.id);
-    if (existingItem) {
-      alert(`${game.title} is already in your cart!`);
+    if (!game || !game.id) return;
+
+    const alreadyInCart = cartItems.some((item) => item.id === game.id);
+    if (alreadyInCart) {
+      toast.warning(`${game.title} is already in the cart.`);
       return;
     }
-    
+
     setCartItems(prev => [...prev, {
       ...game,
       type: game.genre || 'Base Game',
       currentPrice: game.price,
       originalPrice: game.originalPrice,
-      discount: game.originalPrice ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100) : 0,
+      discount: game.originalPrice
+        ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100)
+        : 0,
       selfRefundable: true,
       rewards: game.rating >= 4.8 ? "Earn a boosted 20% back in Epic Rewards!" : null
     }]);
-    
-    alert(`${game.title} added to cart!`);
-  };
 
-  const removeFromCart = (gameId) => {
-    setCartItems(prev => prev.filter(item => item.id !== gameId));
+    toast.success(`${game.title} added to cart!`);
   };
 
   const addToWishlist = (game) => {
     const existingItem = wishlistItems.find(item => item.id === game.id);
     if (existingItem) {
-      alert(`${game.title} is already in your wishlist!`);
+      toast.error(`${game.title} is already in your wishlist!`);
       return;
     }
-    
+
     setWishlistItems(prev => [...prev, game]);
-    alert(`${game.title} added to wishlist!`);
+    toast.success(`${game.title} added to wishlist!`);
   };
 
   const removeFromWishlist = (gameId) => {
+    const itemToRemove = wishlistItems.find(item => item.id === gameId);
     setWishlistItems(prev => prev.filter(item => item.id !== gameId));
+    if (itemToRemove) {
+      toast.info(`${itemToRemove.title} removed from wishlist.`);
+    }
+  };
+
+  const removeFromCart = (gameId) => {
+    setCartItems(prev => prev.filter(item => item.id !== gameId));
   };
 
   const moveToCartFromWishlist = (gameId) => {
@@ -104,7 +106,7 @@ export const GameProvider = ({ children }) => {
         title: item.title,
         genre: item.type,
         rating: item.rating,
-        price: item.currentPrice
+        price: item.currentPrice,
       });
       removeFromCart(gameId);
     }
@@ -123,7 +125,7 @@ export const GameProvider = ({ children }) => {
     moveToCartFromWishlist,
     moveToWishlistFromCart,
     isInCart,
-    isInWishlist
+    isInWishlist,
   };
 
   return (
