@@ -4,7 +4,6 @@ import Button from "./Button";
 import { TiLocationArrow } from "react-icons/ti";
 // We are no longer using react-icons for the audio button.
 import { useWindowScroll } from "react-use";
-import gsap from "gsap";
 
 const navItems = [
   { name: "Nexus", href: "#about" },
@@ -56,38 +55,18 @@ const VolumeOffIcon = ({ className }) => (
 
 const Navbar = () => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isNavVisible, setIsNavVisible] = useState(true);
   const navContainerRef = useRef(null);
   const audioElementRef = useRef(null);
   const { y: currentScrollY } = useWindowScroll();
 
-  // Optimized scroll effect
+  // Add floating nav class when scrolled (for styling effects only)
   useEffect(() => {
-    const SCROLL_DELTA = 10;
-    if (currentScrollY <= SCROLL_DELTA) {
-      setIsNavVisible(true);
-      navContainerRef.current?.classList.remove("floating-nav");
-      return;
-    }
-    if (currentScrollY > lastScrollY && Math.abs(currentScrollY - lastScrollY) > SCROLL_DELTA) {
-      setIsNavVisible(false);
-    } else if (currentScrollY < lastScrollY && Math.abs(currentScrollY - lastScrollY) > SCROLL_DELTA) {
-      setIsNavVisible(true);
+    if (currentScrollY > 0) {
       navContainerRef.current?.classList.add("floating-nav");
+    } else {
+      navContainerRef.current?.classList.remove("floating-nav");
     }
-    setLastScrollY(currentScrollY);
   }, [currentScrollY]);
-
-  // GSAP animation for navbar visibility
-  useEffect(() => {
-    gsap.to(navContainerRef.current, {
-      y: isNavVisible ? 0 : -100,
-      opacity: isNavVisible ? 1 : 0,
-      duration: 0.3,
-      ease: "power2.inOut",
-    });
-  }, [isNavVisible]);
 
   const toggleAudio = () => {
     setIsAudioPlaying((prev) => !prev);
