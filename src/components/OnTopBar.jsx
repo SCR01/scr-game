@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ArrowBigUp } from "lucide-react";
 import Styled from "styled-components";
-import { Weight } from "lucide-react";
+
 
 const OnTopBar = () => {
   const [isvisible, setIsVisible] = React.useState(false);
@@ -61,10 +61,7 @@ const Container = Styled.section`
     left: 0;
     height: 2px;
     background: #00abff;
-    
-
-   
-  
+ 
   }
 
   .on-top-bar {
