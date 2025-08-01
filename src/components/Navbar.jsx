@@ -11,41 +11,24 @@ const navItems = [
   { name: "Vault", href: "#features" },
   { name: "Prologue", href: "#story" },
   { name: "About", href: "#about" },
-  { name: "Contact Us", href: "#contact" },
+  { name: "Contact", href: "#contact" },
 ];
 
 const Navbar = () => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isIndicatorActive, setIsIndicatorActive] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isNavVisible, setIsNavVisible] = useState(true);
   const navContainerRef = useRef(null);
   const audioElementRef = useRef(null);
   const { y: currentScrollY } = useWindowScroll();
 
+  // Add floating nav class when scrolled
   useEffect(() => {
     if (currentScrollY === 0) {
-      setIsNavVisible(true);
       navContainerRef.current.classList.remove("floating-nav");
-    } else if (currentScrollY > lastScrollY) {
-      setIsNavVisible(false);
-      navContainerRef.current.classList.remove("floating-nav");
-      navContainerRef.current.classList.add("floating-view");
-    } else if (currentScrollY < lastScrollY) {
-      setIsNavVisible(true);
-      navContainerRef.current.classList.remove("floating-view");
+    } else {
       navContainerRef.current.classList.add("floating-nav");
     }
-    setLastScrollY(currentScrollY);
   }, [currentScrollY]);
-
-  useEffect(() => {
-    gsap.to(navContainerRef.current, {
-      y: isNavVisible ? 0 : -100,
-      opacity: isNavVisible ? 1 : 0,
-      duration: 0.2,
-    });
-  }, [isNavVisible]);
 
   const toggleAudioIndicator = () => {
     setIsAudioPlaying((prev) => !prev);
