@@ -271,3 +271,43 @@ body {
     opacity: 0.8;
   }
 }
+
+/* Add to your global CSS if not already defined */
+.indicator-line {
+  width: 2px;
+  height: 10px;
+  background: #00f;
+  animation: bounce 1s infinite ease-in-out;
+  opacity: 0.6;
+}
+
+.indicator-line.active {
+  opacity: 1;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.5);
+  }
+}
+
+.floating-nav {
+  backdrop-filter: blur(12px);
+  background-color: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #e5e7eb; /* Tailwind's gray-200 */
+}
+
+
+.floating-view {
+  backdrop-filter: blur(12px);
+  background-color: #ffffff; /* solid white */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.nav-hover-btn {
+  @apply text-black hover:text-blue-500 transition-colors duration-200;
+}
