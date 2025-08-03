@@ -11,6 +11,7 @@ import CursorTrail from './components/CursorTrail/CursorTrail';
 import CartWishlist from './components/CartWishlist';
 import { GameProvider } from './context/GameContext';
 import { Toaster } from 'sonner';
+import OnTopBar from './components/OnTopBar';
 
 const App = () => {
   return (
@@ -79,6 +80,7 @@ const App = () => {
         </div>
         <Contact />
         <Footer />
+        <OnTopBar />
       </main>
     </GameProvider>
   );
