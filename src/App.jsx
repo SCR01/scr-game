@@ -1,23 +1,27 @@
+// App.jsx
 import React from 'react';
-import Hero from './components/Hero';
-import About from './components/About';
-import Navbar from './components/Navbar';
-import Features from './components/Features';
-import GamesGallery from './components/GamesGallery';
-import Story from './components/Story';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import CursorTrail from './components/CursorTrail/CursorTrail';
-import CartWishlist from './components/CartWishlist';
-import { GameProvider } from './context/GameContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
+import { GameProvider } from './context/GameContext';
+
+import CursorTrail from './components/CursorTrail/CursorTrail';
 import OnTopBar from './components/OnTopBar';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+
+// Pages
+import Home from './pages/Home';
+import Nexus from './pages/Nexus';
+import Vault from './pages/Vault';
+import Prologue from './pages/Prologue';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 const App = () => {
   return (
     <GameProvider>
-      <Toaster 
-        richColors 
+      <Toaster
+        richColors
         position="top-right"
         expand={true}
         closeButton={true}
@@ -66,22 +70,25 @@ const App = () => {
           },
         }}
       />
-      
-      <main className="relative min-h-screen w-screen overflow-x-hidden">
-        <CursorTrail />
-        <Hero />
-        <Navbar />
-        <About />
-        <Features />
-        <GamesGallery />
-        <Story />
-        <div className="mb-32">
-          <CartWishlist />
-        </div>
-        <Contact />
-        <Footer />
-        <OnTopBar />
-      </main>
+
+      <Router>
+        <main className="relative min-h-screen w-screen overflow-x-hidden">
+          <CursorTrail />
+          <OnTopBar />
+          <Navbar />
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/nexus" element={<Nexus />} />
+            <Route path="/vault" element={<Vault />} />
+            <Route path="/prologue" element={<Prologue />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+
+          <Footer />
+        </main>
+      </Router>
     </GameProvider>
   );
 };

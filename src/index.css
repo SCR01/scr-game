@@ -290,13 +290,49 @@ body {
     opacity: 0.8;
   }
 }
+/* Merged Floating Nav Styles */
+.floating-nav {
+  @apply bg-black rounded-lg border;
+  backdrop-filter: blur(12px);
+  background-color: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #e5e7eb; /* Tailwind's gray-200 */
+}
 
-/* =============================
-   Custom Gaming Scrollbar Style
-   Theme: Neon Yellow (#edff66)
-   ============================= */
+.floating-view {
+  backdrop-filter: blur(12px);
+  background-color: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
 
-/* —— WebKit Browsers —— */
+.nav-hover-btn {
+  @apply relative ms-10 font-general text-base sm:text-lg md:text-xl uppercase text-black hover:text-blue-500 transition-colors duration-200;
+}
+
+/* Final Indicator Line Animation */
+.indicator-line {
+  @apply h-1 w-px rounded-full bg-white transition-all duration-200 ease-in-out;
+  width: 2px;
+  height: 10px;
+  background: #00f;
+  animation: bounce 1s infinite ease-in-out;
+  opacity: 0.6;
+}
+
+.indicator-line.active {
+  opacity: 1;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.5);
+  }
+}
+
+/* Scrollbar Styles - WebKit */
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
@@ -304,7 +340,6 @@ body {
 
 ::-webkit-scrollbar-track {
   background-color: #0a0a0a;
- 
   box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.05);
 }
 
@@ -322,38 +357,8 @@ body {
   transform: scale(1.05);
 }
 
-
-
-/* —— WebKit Browsers —— */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #0a0a0a;
-  border-radius: 8px;
-  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.05);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(145deg, #f6ff80, #cddf44);
-  border-radius: 8px;
-  border: 2px solid #0a0a0a;
-  box-shadow: 0 0 10px #edff66aa;
-  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(145deg, #edff66, #aabf33);
-  box-shadow: 0 0 16px #edff66;
-  transform: scale(1.05);
-}
-
-/* —— Firefox —— */
+/* Firefox Scrollbar */
 * {
-  scrollbar-width: auto;            
-  scrollbar-color: #f6ff80 #0a0a0a;    
+  scrollbar-width: auto;
+  scrollbar-color: #f6ff80 #0a0a0a;
 }
-
-
