@@ -30,17 +30,24 @@ const About = () => {
   return (
     <div id="about" className="min-h-screen w-screen">
       <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-        <h2 className="font-general text-sm uppercase md:text-[10px]">
+        <h2 className="font-nippo-light text-lg uppercase md:text-[25px]">
           Welcome to MATRIX
         </h2>
-        <AnimatedTitle title=" Re<b>de</b>fine reality <br /> Embrace the un<b>k</b>nown" containerClass="mt-5 !text-black text-center"/>
-        <div className="mt-5 text-center text-4xl uppercase leading-[0.8] md:text-[6rem]">
-          
-        </div>
+        <AnimatedTitle
+          title=" Re<b>de</b>fine reality <br /> Embrace the un<b>k</b>nown"
+          containerClass="mt-5 !text-black text-center"
+        />
+        <div className="mt-5 text-center text-4xl uppercase leading-[0.8] md:text-[6rem]"></div>
         <div className="about-subtext">
-          <p>Step into the simulation where your imagination shapes the future.</p>
-          <p>
-            MATRIX: One world, infinite dimensions. Your journey starts now.
+          <p className="font-nippo-light">
+            Step into the simulation where your imagination shapes the future.
+          </p>
+
+          <p>· · ─ ·✶· ─ · ·</p>
+
+          <p className="font-nippo-light">
+            <b>MATRIX</b> — One world, infinite dimensions. Your journey starts
+            now.
           </p>
         </div>
       </div>

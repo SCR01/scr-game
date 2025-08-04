@@ -13,6 +13,11 @@ body {
 
 @layer base {
   @font-face {
+    font-family: "nippo-light";
+    src: url("/fonts/nippo-light.woff2") format("woff2");
+  }
+
+  @font-face {
     font-family: "circular-web";
     src: url("/fonts/circularweb-book.woff2") format("woff2");
   }
@@ -44,7 +49,7 @@ body {
   }
 
   .nav-hover-btn {
-    @apply relative ms-10 font-general text-xs uppercase text-blue-50 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-800 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
+    @apply relative ms-10 font-general text-base sm:text-lg md:text-xl uppercase text-blue-50 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-800 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
   }
 
   .floating-nav {
@@ -140,6 +145,20 @@ body {
 
   .contact-clip-path-2 {
     clip-path: polygon(29% 15%, 85% 30%, 50% 100%, 10% 64%);
+  }
+
+  /* Games Gallery Styles */
+  .game-tilt {
+    @apply relative overflow-hidden rounded-xl transition-transform duration-300 ease-out;
+  }
+
+  .game-title {
+    @apply special-font font-zentry font-black;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  }
+
+  .games-grid {
+    @apply mb-12;
   }
 }
 
@@ -271,9 +290,28 @@ body {
     opacity: 0.8;
   }
 }
+/* Merged Floating Nav Styles */
+.floating-nav {
+  @apply bg-black rounded-lg border;
+  backdrop-filter: blur(12px);
+  background-color: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #e5e7eb; /* Tailwind's gray-200 */
+}
 
-/* Add to your global CSS if not already defined */
+.floating-view {
+  backdrop-filter: blur(12px);
+  background-color: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.nav-hover-btn {
+  @apply relative ms-10 font-general text-base sm:text-lg md:text-xl uppercase text-black hover:text-blue-500 transition-colors duration-200;
+}
+
+/* Final Indicator Line Animation */
 .indicator-line {
+  @apply h-1 w-px rounded-full bg-white transition-all duration-200 ease-in-out;
   width: 2px;
   height: 10px;
   background: #00f;
@@ -294,20 +332,33 @@ body {
   }
 }
 
-.floating-nav {
-  backdrop-filter: blur(12px);
-  background-color: #ffffff;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid #e5e7eb; /* Tailwind's gray-200 */
+/* Scrollbar Styles - WebKit */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
 }
 
-
-.floating-view {
-  backdrop-filter: blur(12px);
-  background-color: #ffffff; /* solid white */
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+::-webkit-scrollbar-track {
+  background-color: #0a0a0a;
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.05);
 }
 
-.nav-hover-btn {
-  @apply text-black hover:text-blue-500 transition-colors duration-200;
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(145deg, #f6ff80, #cddf44);
+  border-radius: 8px;
+  border: 2px solid #0a0a0a;
+  box-shadow: 0 0 10px #edff66aa;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(145deg, #edff66, #aabf33);
+  box-shadow: 0 0 16px #edff66;
+  transform: scale(1.05);
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #f6ff80 #0a0a0a;
 }

@@ -34,7 +34,7 @@ const Contact = () => {
         </div>
 
         <div className="flex flex-col items-center text-center">
-          <p className="mb-10 font-general text-[10px] uppercase">
+          <p className="mb-10 font-nippo-light text-[20px] uppercase">
             Join SCR Gaming
           </p>
 
@@ -44,10 +44,12 @@ const Contact = () => {
           />
 
           {/* Cylindrical Button with Hover Effect */}
+        <a href="mailto:sharadreddy11@gmail.com">
           <Button
             title="Contact Us"
             containerClass="mt-6 bg-white text-black px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform"
           />
+        </a>
         </div>
       </div>
     </div>
