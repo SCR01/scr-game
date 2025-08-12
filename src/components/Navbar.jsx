@@ -4,6 +4,7 @@ import Button from "./Button";
 import { TiLocationArrow } from "react-icons/ti";
 import { useWindowScroll } from "react-use";
 import gsap from "gsap";
+import SearchBar from "./SearchBar";
 
 // Navigation items - updated with correct section IDs
 const navItems = [
@@ -14,7 +15,7 @@ const navItems = [
   { name: "Contact", href: "#contact" },
 ];
 
-const Navbar = () => {
+const Navbar = ({ gameTitles = [] }) => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isIndicatorActive, setIsIndicatorActive] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -76,6 +77,7 @@ const Navbar = () => {
               rightIcon={<TiLocationArrow />}
               containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
             />
+            <SearchBar gameTitles={gameTitles} />
           </div>
 
           {/* Right Section */}

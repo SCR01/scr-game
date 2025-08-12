@@ -42,6 +42,7 @@
 ✅ **Smooth Scroll Animations** – Engaging animations triggered by user interactions.
 ✅ **Clip Path Transitions** – Unique visual effects for modern UI.
 ✅ **3D Hover Effects** – Interactive transformations for an immersive experience.
+✅ **Smart Search System** – Real-time game search with auto-suggestions and keyboard navigation.
 ✅ **Fast & Lightweight** – Optimized with Vite for high performance.
 ✅ **Responsive Design** – Optimized for all screen sizes.
 ✅ **SEO Optimized** – Ensures better search engine visibility.

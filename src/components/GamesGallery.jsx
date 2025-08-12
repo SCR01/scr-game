@@ -175,9 +175,10 @@ export const GameCard = ({
         </div>
 
         <div>
+          {/* Change 1: Add data-title attribute to h3 */}
           <h3 className={`game-title special-font font-zentry font-black mb-1 md:mb-2 ${
             isHero ? 'text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl' : 'text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl'
-          }`}>
+          }`} data-title={title}>
             {title}
           </h3>
           
@@ -279,67 +280,7 @@ export const GameCard = ({
 };
 
 // Main Games Gallery Component
-const GamesGallery = () => {
-  // Sample game data with prices
-  const gamesData = [
-    {
-      id: 1,
-      image: "/img/gallery-1.webp",
-      title: "Cyber Nexus",
-      genre: "Sci-Fi RPG",
-      rating: "4.8",
-      isPlayable: true,
-      price: "1999",
-      originalPrice: "2999",
-    },
-    {
-      id: 2,
-      image: "/img/gallery-2.webp", 
-      title: "Shadow Realm",
-      genre: "Dark Fantasy",
-      rating: "4.7",
-      isPlayable: true,
-      price: "1599",
-    },
-    {
-      id: 3,
-      image: "/img/gallery-3.webp",
-      title: "Neon Runner",
-      genre: "Cyberpunk",
-      rating: "4.6",
-      isComingSoon: true,
-      price: "2499",
-    },
-    {
-      id: 4,
-      image: "/img/gallery-4.webp",
-      title: "Mystic Quest",
-      genre: "Adventure",
-      rating: "4.9",
-      isPlayable: true,
-      price: "999",
-      originalPrice: "1499",
-    },
-    {
-      id: 5,
-      image: "/img/gallery-5.webp",
-      title: "Steel Warriors",
-      genre: "Action",
-      rating: "4.5",
-      isComingSoon: true,
-      price: "1799",
-    },
-    {
-      id: 6,
-      image: "/img/swordman.webp",
-      title: "Blade Master",
-      genre: "Fighting",
-      rating: "4.8",
-      isPlayable: true,
-      // Free game - no price
-    },
-  ];
-
+const GamesGallery = ({ gamesData }) => { // Change 2: Accept gamesData as a prop
   // GSAP animation for scroll-triggered entrance
   useGSAP(() => {
     // Animate the main title
@@ -408,12 +349,12 @@ const GamesGallery = () => {
         <div className="text-center mb-16">
           <div className="games-gallery-title mb-8">
            <h2 className="font-nippo-light text-lg uppercase md:text-[25px]">
-          G∀ME ON
-        </h2>
-        <AnimatedTitle
-          title=" Fe<b>at</b>ured Ga<b>m</b>es <br /> Colle<b>c</b>tion"
-          containerClass="mt-5 !text-black text-center"
-        />
+            G∀ME ON
+          </h2>
+          <AnimatedTitle
+            title=" Fe<b>at</b>ured Ga<b>m</b>es <br /> Colle<b>c</b>tion"
+            containerClass="mt-5 !text-black text-center"
+          />
           </div>
           
           <p className="games-gallery-subtitle font-nippo-light text-lg md:text-xl text-black/70 max-w-2xl mx-auto">

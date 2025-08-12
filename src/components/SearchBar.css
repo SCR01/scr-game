@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-search {
+  width: auto;
+  margin-left: 1rem;
+}
+
+.search-title {
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.search-container {
+  font-family: 'Orbitron', sans-serif;
+  position: relative;
+  width: 280px;
+  background: linear-gradient(135deg, #1a1c1f 0%, #2a2c2f 100%);
+  border: 3px solid #00f0ff; /* Increased border width for visibility */
+  border-radius: 12px;
+  box-shadow: 0 0 15px #00f0ff80, 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  /* Removed problematic clip-path for now */
+}
+
+.search-container:focus-within {
+  border-color: #00f0ff;
+  box-shadow: 0 0 25px #00f0ff, 0 0 35px #00f0ff40;
+  transform: translateY(-1px);
+  /* Enhanced gaming glow effect */
+  filter: drop-shadow(0 0 8px #00f0ff) drop-shadow(0 0 16px #00f0ff40);
+}
+
+#searchInput {
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+#searchInput::placeholder {
+  color: #7aa1c4;
+  transition: color 0.3s ease;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+#searchInput:focus::placeholder {
+  color: #00f0ff;
+}
+
+#searchSuggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #1a1c1f 0%, #2a2c2f 100%);
+  border: 1px solid #00f0ff88;
+  border-radius: 0 0 12px 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  animation: slideDown 0.3s ease-out;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.3);
+  z-index: 1001;
+}
+
+#searchSuggestions li {
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #e0e6f8;
+  transition: all 0.15s ease;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+  /* Gaming theme: hover glow effect */
+  position: relative;
+  overflow: hidden;
+}
+
+#searchSuggestions li::before {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.1), transparent);
+  transition: left 0.3s ease;
+}
+
+#searchSuggestions li:hover::before {
+  left: 100%;
+}
+
+#searchSuggestions li:last-child {
+  border-bottom: none;
+}
+
+#searchSuggestions li:hover {
+  background: rgba(0, 240, 255, 0.15);
+  color: #ffffff;
+  transform: translateX(5px);
+}
+
+#searchSuggestions li.selected {
+  background: rgba(0, 240, 255, 0.25);
+  color: #ffffff;
+  border-left: 3px solid #00f0ff;
+  padding-left: 11px;
+}
+
+.no-result {
+  color: #ff6b6b;
+  pointer-events: none;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Custom scrollbar for suggestions */
+#searchSuggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+#searchSuggestions::-webkit-scrollbar-track {
+  background: rgba(0, 240, 255, 0.1);
+  border-radius: 3px;
+}
+
+#searchSuggestions::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.5);
+  border-radius: 3px;
+}
+
+#searchSuggestions::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.8);
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes searchHighlight {
+  0% {
+    background: rgba(0, 240, 255, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    background: rgba(0, 240, 255, 0.6);
+    transform: scale(1.05);
+  }
+  100% {
+    background: transparent;
+    transform: scale(1);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .search-container {
+    max-width: 90%;
+  }
+
+  #searchInput {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  #searchSuggestions {
+    max-height: 150px;
+  }
+
+  #searchSuggestions li {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Focus styles for accessibility */
+#searchInput:focus {
+  color: #ffffff;
+}
+
+/* Loading state (optional) */
+.search-container.loading::after {
+  content: '';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid #00f0ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Gaming theme: scanning line effect - temporarily disabled for debugging */
+.search-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+  animation: scanLine 3s ease-in-out infinite;
+  z-index: 1;
+  opacity: 0.5; /* Reduced opacity for debugging */
+}
+
+@keyframes scanLine {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* Gaming theme: neon pulse animation - temporarily disabled for debugging */
+.search-container::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #00f0ff, #0080ff, #00f0ff);
+  border-radius: 14px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.search-container:focus-within::after {
+  opacity: 0.2; /* Reduced opacity for debugging */
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
