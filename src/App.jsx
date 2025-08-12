@@ -1,20 +1,20 @@
-import React from 'react'
-import { Toaster } from 'sonner'
-import Hero from './components/Hero'
-import About from './components/About'
-import Navbar from './components/Navbar'
-import Features from './components/Features'
-import GamesGallery from './components/GamesGallery'
-import Story from './components/Story'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import CursorTrail from "./components/CursorTrail/CursorTrail";
-import CartWishlist from './components/CartWishlist'
-import { GameProvider } from './context/GameContext'
-import SearchBar from "./components/SearchBar"; 
+import React from 'react';
+import { Toaster } from 'sonner';
+import Hero from './components/Hero';
+import About from './components/About';
+import Navbar from './components/Navbar';
+import Features from './components/Features';
+import GamesGallery from './components/GamesGallery';
+import Story from './components/Story';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+import CursorTrail from './components/CursorTrail/CursorTrail';
+import CartWishlist from './components/CartWishlist';
+import { GameProvider } from './context/GameContext';
+import OnTopBar from './components/OnTopBar';
 
 const App = () => {
-  // Change 2: Centralize the gamesData here
+  // Centralize the gamesData here
   const gamesData = [
     {
       id: 1,
@@ -73,7 +73,7 @@ const App = () => {
       // Free game - no price
     },
   ];
-  
+
   const gameTitles = gamesData.map((game) => game.title);
 
   return (
@@ -128,22 +128,23 @@ const App = () => {
           },
         }}
       />
-      <main className='relative min-h-screen w-screen overflow-x-hidden'>
+      <main className="relative min-h-screen w-screen overflow-x-hidden">
         <CursorTrail />
-        <Navbar gameTitles={gameTitles}/>
-        <Hero/>
-        <About/>
-        <Features/>
+        <Navbar gameTitles={gameTitles} />
+        <Hero />
+        <About />
+        <Features />
         <GamesGallery gamesData={gamesData} />
-        <Story/>
+        <Story />
         <div className="mb-32">
-          <CartWishlist/>
+          <CartWishlist />
         </div>
-        <Contact/>
-        <Footer/>
+        <Contact />
+        <Footer />
+        <OnTopBar />
       </main>
     </GameProvider>
-  )
-}
+  );
+};
 
 export default App;

@@ -12,26 +12,45 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [hasClicked, setHasClicked] = useState(false);
-
   const [loading, setLoading] = useState(true);
-  const [loadedVideos, setLoadedVideos] = useState(0);
 
   const totalVideos = 4;
+  const mainVideoRef = useRef(null); // Ref for the main, visible video
   const nextVdRef = useRef(null);
 
-  const handleVideoLoad = () => {
-    setLoadedVideos((prev) => prev + 1);
-  };
+  // ===================================================================
+  // START: Robust Loading State Fix
+  // ===================================================================
 
   useEffect(() => {
-    if (loadedVideos === totalVideos - 1) {
+    const mainVideoElement = mainVideoRef.current;
+    if (!mainVideoElement) return;
+
+    // Function to hide the loader
+    const hideLoader = () => {
       setLoading(false);
-    }
-  }, [loadedVideos]);
+    };
+
+    // 1. Hide loader when the *main* video is ready to play
+    mainVideoElement.addEventListener('loadeddata', hideLoader);
+
+    // 2. Safety Fallback: Hide loader after 3 seconds regardless
+    const safetyTimeout = setTimeout(hideLoader, 3000);
+
+    // Cleanup function to remove listeners and timeout
+    return () => {
+      mainVideoElement.removeEventListener('loadeddata', hideLoader);
+      clearTimeout(safetyTimeout);
+    };
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+  // ===================================================================
+  // END: Robust Loading State Fix
+  // ===================================================================
+
 
   const handleMiniVdClick = () => {
     setHasClicked(true);
-
     setCurrentIndex((prevIndex) => (prevIndex % totalVideos) + 1);
   };
 
@@ -86,7 +105,6 @@ const Hero = () => {
     <div className="relative h-dvh w-screen overflow-x-hidden">
       {loading && (
         <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
-          {/* https://uiverse.io/G4b413l/tidy-walrus-92 */}
           <div className="three-body">
             <div className="three-body__dot"></div>
             <div className="three-body__dot"></div>
@@ -113,7 +131,6 @@ const Hero = () => {
                   muted
                   id="current-video"
                   className="size-64 origin-center scale-150 object-cover object-center"
-                  onLoadedData={handleVideoLoad}
                 />
               </div>
             </VideoPreview>
@@ -126,17 +143,17 @@ const Hero = () => {
             muted
             id="next-video"
             className="absolute-center invisible absolute z-20 size-64 object-cover object-center"
-            onLoadedData={handleVideoLoad}
           />
           <video
+            ref={mainVideoRef} // Assign the ref to the main video
             src={getVideoSrc(
               currentIndex === totalVideos - 1 ? 1 : currentIndex
             )}
             autoPlay
             loop
             muted
+            playsInline // Important for autoplay on mobile
             className="absolute left-0 top-0 size-full object-cover object-center"
-            onLoadedData={handleVideoLoad}
           />
         </div>
 
@@ -149,11 +166,9 @@ const Hero = () => {
             <h1 className="special-font hero-heading text-blue-100">
               <b>SCR</b>
             </h1>
-
             <p className="mb-5 max-w-64 font-nippo-light text-lg text-blue-100">
               Enter the Metagame Layer <br /> Unleash the Play Economy
             </p>
-
             <Button
               id="watch-trailer"
               title="Watch trailer"
@@ -163,7 +178,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
       <h1 className="special-font hero-heading absolute bottom-5 right-5 text-black">
         G<b>A</b>MING
       </h1>
