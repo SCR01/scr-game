@@ -23,22 +23,13 @@
   font-family: 'Orbitron', sans-serif;
   position: relative;
   width: 280px;
-  background: linear-gradient(135deg, #1a1c1f 0%, #2a2c2f 100%);
-  border: 3px solid #00f0ff; /* Increased border width for visibility */
+  background: rgba(0, 240, 255, 0.1);
+  border: 2px solid rgba(0, 240, 255, 0.8);
   border-radius: 12px;
-  box-shadow: 0 0 15px #00f0ff80, 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 15px #00f0ff40, 0 4px 20px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
   z-index: 1000;
   backdrop-filter: blur(10px);
-  /* Removed problematic clip-path for now */
-}
-
-.search-container:focus-within {
-  border-color: #00f0ff;
-  box-shadow: 0 0 25px #00f0ff, 0 0 35px #00f0ff40;
-  transform: translateY(-1px);
-  /* Enhanced gaming glow effect */
-  filter: drop-shadow(0 0 8px #00f0ff) drop-shadow(0 0 16px #00f0ff40);
 }
 
 #searchInput {
@@ -55,7 +46,6 @@
 
 #searchInput::placeholder {
   color: #7aa1c4;
-  transition: color 0.3s ease;
   font-weight: 400;
   font-size: 0.9rem;
 }
@@ -71,7 +61,7 @@
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
-  background: linear-gradient(135deg, #1a1c1f 0%, #2a2c2f 100%);
+  background: rgba(0, 0, 0, 0.9);
   border: 1px solid #00f0ff88;
   border-radius: 0 0 12px 12px;
   list-style: none;
@@ -79,7 +69,7 @@
   margin: 0;
   animation: slideDown 0.3s ease-out;
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
   z-index: 1001;
 }
 
@@ -89,39 +79,33 @@
   color: #e0e6f8;
   transition: all 0.15s ease;
   border-bottom: 1px solid rgba(0, 240, 255, 0.1);
-  /* Gaming theme: hover glow effect */
   position: relative;
   overflow: hidden;
-}
-
-#searchSuggestions li::before {
-  content: '';
-  position: absolute;
-  left: -100%;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.1), transparent);
-  transition: left 0.3s ease;
-}
-
-#searchSuggestions li:hover::before {
-  left: 100%;
 }
 
 #searchSuggestions li:last-child {
   border-bottom: none;
 }
 
-#searchSuggestions li:hover {
-  background: rgba(0, 240, 255, 0.15);
-  color: #ffffff;
-  transform: translateX(5px);
+#searchSuggestions li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  transition: none;
+}
+
+#searchSuggestions li:hover,
+#searchSuggestions li.selected {
+  background: rgba(0, 0, 0, 0.1); /* subtle highlight only */
+  color: #eaf6fb;
+  padding-left: 14px;
 }
 
 #searchSuggestions li.selected {
-  background: rgba(0, 240, 255, 0.25);
-  color: #ffffff;
   border-left: 3px solid #00f0ff;
   padding-left: 11px;
 }
@@ -133,7 +117,6 @@
   text-align: center;
 }
 
-/* Custom scrollbar for suggestions */
 #searchSuggestions::-webkit-scrollbar {
   width: 6px;
 }
@@ -152,7 +135,6 @@
   background: rgba(0, 240, 255, 0.8);
 }
 
-/* Animations */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -164,22 +146,6 @@
   }
 }
 
-@keyframes searchHighlight {
-  0% {
-    background: rgba(0, 240, 255, 0.3);
-    transform: scale(1);
-  }
-  50% {
-    background: rgba(0, 240, 255, 0.6);
-    transform: scale(1.05);
-  }
-  100% {
-    background: transparent;
-    transform: scale(1);
-  }
-}
-
-/* Responsive design */
 @media (max-width: 600px) {
   .search-container {
     max-width: 90%;
@@ -200,12 +166,11 @@
   }
 }
 
-/* Focus styles for accessibility */
 #searchInput:focus {
   color: #ffffff;
 }
 
-/* Loading state (optional) */
+/* Loading spinner */
 .search-container.loading::after {
   content: '';
   position: absolute;
@@ -225,44 +190,46 @@
   100% { transform: translateY(-50%) rotate(360deg); }
 }
 
-/* Gaming theme: scanning line effect - temporarily disabled for debugging */
-.search-container::before {
-  content: '';
+/* Button styling without blue background effect */
+.neon-btn {
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
-  animation: scanLine 3s ease-in-out infinite;
-  z-index: 1;
-  opacity: 0.5; /* Reduced opacity for debugging */
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,240,255,0.1);
+  border: 2px solid rgba(0,240,255,0.8);
+  color: #00f0ff;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #00f0ff40, 0 4px 20px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 1001;
 }
 
-@keyframes scanLine {
-  0% { left: -100%; }
-  50% { left: 100%; }
-  100% { left: 100%; }
+.neon-btn:hover {
+  transform: translateY(-50%) scale(1.05);
 }
 
-/* Gaming theme: neon pulse animation - temporarily disabled for debugging */
+.neon-btn:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+/* Remove focus glow completely */
+.search-container:focus-within {
+  border-color: rgba(0,240,255,0.8);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  transform: translateY(0);
+  filter: none;
+}
+
 .search-container::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(45deg, #00f0ff, #0080ff, #00f0ff);
-  border-radius: 14px;
-  z-index: -1;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  animation: none;
 }
 
-.search-container:focus-within::after {
-  opacity: 0.2; /* Reduced opacity for debugging */
-  animation: neonPulse 2s ease-in-out infinite;
-}
-
-@keyframes neonPulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
+.search-container::before {
+  display: none; /* Remove scan line */
 }
