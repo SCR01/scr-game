@@ -2,8 +2,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { TiLocationArrow } from "react-icons/ti";
-// We are no longer using react-icons for the audio button.
 import { useWindowScroll } from "react-use";
+import gsap from "gsap";
+import SearchBar from "./SearchBar";
 
 const navItems = [
   { name: "Nexus", href: "#about" },
@@ -13,11 +14,7 @@ const navItems = [
   { name: "Contact", href: "#contact" },
 ];
 
-// ===================================================================
-// START: Custom Thematic SVG Icons
-// These are designed to perfectly match the website's futuristic UI.
-// ===================================================================
-
+// Custom SVG Icons
 const VolumeOnIcon = ({ className }) => (
   <svg
     className={className}
@@ -49,11 +46,8 @@ const VolumeOffIcon = ({ className }) => (
     <line x1="17" y1="9" x2="23" y2="15"></line>
   </svg>
 );
-// ===================================================================
-// END: Custom Thematic SVG Icons
-// ===================================================================
 
-const Navbar = () => {
+const Navbar = ({ gameTitles = [] }) => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const navContainerRef = useRef(null);
   const audioElementRef = useRef(null);
@@ -100,6 +94,8 @@ const Navbar = () => {
               rightIcon={<TiLocationArrow />}
               containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
             />
+            {/* SearchBar placed right after Products button */}
+            <SearchBar gameTitles={gameTitles} />
           </div>
 
           {/* Right Section */}

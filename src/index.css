@@ -160,6 +160,8 @@ body {
   .games-grid {
     @apply mb-12;
   }
+
+
 }
 
 .indicator-line {
@@ -183,6 +185,22 @@ body {
   100% {
     height: 4px;
     transform: translateY(-0px);
+  }
+}
+
+/* Search highlight animation for game titles */
+@keyframes searchHighlight {
+  0% {
+    background: rgba(0, 240, 255, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    background: rgba(0, 240, 255, 0.6);
+    transform: scale(1.05);
+  }
+  100% {
+    background: transparent;
+    transform: scale(1);
   }
 }
 

@@ -61,7 +61,6 @@ export const GameCard = ({
   originalPrice = null,
   id
 }) => {
-  // 1. Get `removeFromWishlist` from the context.
   const { addToCart, addToWishlist, removeFromWishlist, isInCart, isInWishlist } = useGame();
   
   const [hoverOpacity, setHoverOpacity] = useState(0);
@@ -91,7 +90,6 @@ export const GameCard = ({
   const handleWishlistEnter = () => setWishlistHover(1);
   const handleWishlistLeave = () => setWishlistHover(0);
 
-  // 2. Create the new toggle handler for the wishlist button.
   const handleWishlistToggle = () => {
     if (isInWishlist(id)) {
       removeFromWishlist(id);
@@ -130,18 +128,16 @@ export const GameCard = ({
                 </span>
               </div>
             )}
-            
-            {/* 3. Update the Wishlist Button to use the new toggle logic. */}
             <button
               ref={wishlistButtonRef}
               onMouseMove={handleWishlistMouseMove}
               onMouseEnter={handleWishlistEnter}
               onMouseLeave={handleWishlistLeave}
-              onClick={handleWishlistToggle} // Use the new toggle handler.
+              onClick={handleWishlistToggle}
               className={`opacity-0 group-hover:opacity-100 transition-all duration-300 relative overflow-hidden rounded-full p-1.5 md:p-2 backdrop-blur-sm cursor-pointer ${
                 isInWishlist(id) 
-                  ? 'bg-yellow-500/80' // Style for "added" state.
-                  : 'bg-black/60 hover:bg-black/80' // Style for "not added" state.
+                  ? 'bg-yellow-500/80'
+                  : 'bg-black/60 hover:bg-black/80'
               }`}
             >
               <div
@@ -161,9 +157,10 @@ export const GameCard = ({
         </div>
 
         <div>
+          {/* Add data-title attribute to h3 */}
           <h3 className={`game-title special-font font-zentry font-black mb-1 md:mb-2 ${
             isHero ? 'text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl' : 'text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl'
-          }`}>
+          }`} data-title={title}>
             {title}
           </h3>
           
@@ -185,7 +182,6 @@ export const GameCard = ({
           )}
 
           <div className="flex flex-wrap gap-1 md:gap-2 lg:gap-3">
-            {/* 4. Ensure the Cart button is a proper button and uses `disabled`. */}
             {isPlayable && price && (
               <button
                 ref={hoverButtonRef}
@@ -212,8 +208,7 @@ export const GameCard = ({
                 <span className="relative z-20 sm:hidden">{isInCart(id) ? 'Added' : 'Cart'}</span>
               </button>
             )}
-            {/* Other buttons remain unchanged */}
-            {isPlayable && !price && ( /* This is the 'Play Now' button */
+            {isPlayable && !price && (
               <button
                 className="border-hsla relative flex w-fit cursor-pointer items-center gap-1 overflow-hidden rounded-full bg-green-500 px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 lg:px-5 lg:py-2.5 text-xs md:text-sm uppercase text-white font-bold backdrop-blur-sm transition-all duration-300 hover:bg-green-600"
               >
@@ -222,7 +217,7 @@ export const GameCard = ({
                 <span className="relative z-20 sm:hidden">Play</span>
               </button>
             )}
-            {isComingSoon && ( /* This is the 'Coming Soon' button */
+            {isComingSoon && (
               <div
                 className="border-hsla relative flex w-fit cursor-pointer items-center gap-1 overflow-hidden rounded-full bg-black/80 px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 lg:px-5 lg:py-2.5 text-xs md:text-sm uppercase text-white/90 backdrop-blur-sm transition-all duration-300"
               >
@@ -242,17 +237,8 @@ export const GameCard = ({
 // END: GameCard Component
 // ===================================================================
 
-// The main GamesGallery component does not need any changes.
-const GamesGallery = () => {
-  const gamesData = [
-    { id: 1, image: "/img/gallery-1.webp", title: "Cyber Nexus", genre: "Sci-Fi RPG", rating: "4.8", isPlayable: true, price: "1999", originalPrice: "2999" },
-    { id: 2, image: "/img/gallery-2.webp", title: "Shadow Realm", genre: "Dark Fantasy", rating: "4.7", isPlayable: true, price: "1599" },
-    { id: 3, image: "/img/gallery-3.webp", title: "Neon Runner", genre: "Cyberpunk", rating: "4.6", isComingSoon: true, price: "2499" },
-    { id: 4, image: "/img/gallery-4.webp", title: "Mystic Quest", genre: "Adventure", rating: "4.9", isPlayable: true, price: "999", originalPrice: "1499" },
-    { id: 5, image: "/img/gallery-5.webp", title: "Steel Warriors", genre: "Action", rating: "4.5", isComingSoon: true, price: "1799" },
-    { id: 6, image: "/img/swordman.webp", title: "Blade Master", genre: "Fighting", rating: "4.8", isPlayable: true },
-  ];
-
+// Main Games Gallery Component
+const GamesGallery = ({ gamesData }) => {
   useGSAP(() => {
     gsap.from(".games-gallery-title", {
       scrollTrigger: { trigger: ".games-gallery-title", start: "top 80%", end: "bottom 20%", toggleActions: "play none none reverse" },
@@ -273,8 +259,13 @@ const GamesGallery = () => {
       <div className="container mx-auto px-5 md:px-10">
         <div className="text-center mb-16">
           <div className="games-gallery-title mb-8">
-            <h2 className="font-nippo-light text-lg uppercase md:text-[25px]">G∀ME ON</h2>
-            <AnimatedTitle title=" Fe<b>at</b>ured Ga<b>m</b>es <br /> Colle<b>c</b>tion" containerClass="mt-5 !text-black text-center" />
+            <h2 className="font-nippo-light text-lg uppercase md:text-[25px]">
+              G∀ME ON
+            </h2>
+            <AnimatedTitle
+              title=" Fe<b>at</b>ured Ga<b>m</b>es <br /> Colle<b>c</b>tion"
+              containerClass="mt-5 !text-black text-center"
+            />
           </div>
           <p className="games-gallery-subtitle font-nippo-light text-lg md:text-xl text-black/70 max-w-2xl mx-auto">
             Discover our curated selection of immersive gaming experiences. From epic adventures to mind-bending puzzles.
