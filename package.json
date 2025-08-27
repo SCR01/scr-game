@@ -1,8 +1,22 @@
 {
-  "name": "my-project",
-  "private": true,
+  "name": "my-project-565",
   "version": "0.0.0",
+  "description": "src game",
+  "keywords": [
+    "gaming"
+  ],
+  "homepage": "https://github.com/Sindhura-Karumuri/scr-game#readme",
+  "bugs": {
+    "url": "https://github.com/Sindhura-Karumuri/scr-game/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sindhura-Karumuri/scr-game.git"
+  },
+  "license": "ISC",
+  "author": "sindhura_karumuri",
   "type": "module",
+  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,14 +26,20 @@
   "dependencies": {
     "@gsap/react": "^2.1.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.23.9",
     "gsap": "^3.12.5",
     "lucide-react": "^0.536.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
+
+    "react-router-dom": "^7.7.1",
+    "react-use": "^17.6.0"
+
     "react-use": "^17.6.0",
     "sonner": "^2.0.6",
     "styled-components": "^6.1.19"
+
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

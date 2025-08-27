@@ -4,6 +4,16 @@ import Button from "./Button";
 import { TiLocationArrow } from "react-icons/ti";
 import { useWindowScroll } from "react-use";
 import gsap from "gsap";
+
+import { Link } from "react-router-dom"; 
+
+// Navigation items and their corresponding routes
+const navItems = [
+  { label: "Nexus", path: "/nexus" },
+  { label: "Vault", path: "/vault" },
+  { label: "Prologue", path: "/prologue" },
+  { label: "About", path: "/about" },
+  { label: "Contact", path: "/contact" },
 import SearchBar from "./SearchBar";
 
 const navItems = [
@@ -12,6 +22,7 @@ const navItems = [
   { name: "Prologue", href: "#story" },
   { name: "About", href: "#about" },
   { name: "Contact", href: "#contact" },
+
 ];
 
 // Custom SVG Icons
@@ -49,25 +60,61 @@ const VolumeOffIcon = ({ className }) => (
 
 const Navbar = ({ gameTitles = [] }) => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [isIndicatorActive, setIsIndicatorActive] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isNavVisible, setIsNavVisible] = useState(true);
   const navContainerRef = useRef(null);
   const audioElementRef = useRef(null);
   const { y: currentScrollY } = useWindowScroll();
 
+  // Handle scroll direction and update nav visibility
+  useEffect(() => {
+    if (currentScrollY === 0) {
+      setIsNavVisible(true);
+    } else if (currentScrollY > lastScrollY) {
+      setIsNavVisible(false);
+    } else if (currentScrollY < lastScrollY) {
+      setIsNavVisible(true);
   // Add floating nav class when scrolled (for styling effects only)
   useEffect(() => {
     if (currentScrollY > 0) {
       navContainerRef.current?.classList.add("floating-nav");
     } else {
       navContainerRef.current?.classList.remove("floating-nav");
+
     }
   }, [currentScrollY]);
+  // Animate nav in/out with GSAP
+  useEffect(() => {
+    const tween = gsap.to(navContainerRef.current, {
+      y: isNavVisible ? 0 : -100,
+      opacity: isNavVisible ? 1 : 0,
+      duration: 0.2,
+      ease: "power2.out",
+    });
+
+    return () => tween.kill();
+  }, [isNavVisible]);
+
+  // Toggle audio playback
+  const toggleAudioIndicator = () => {
 
   const toggleAudio = () => {
+
     setIsAudioPlaying((prev) => !prev);
   };
 
   // Effect to play or pause audio
   useEffect(() => {
+    const audio = audioElementRef.current;
+    if (!audio) return;
+
+    if (isAudioPlaying) {
+      audio.play().catch((err) =>
+        console.warn("Audio autoplay failed:", err)
+      );
+    } else {
+      audio.pause();
     const audioEl = audioElementRef.current;
     if (audioEl) {
       if (isAudioPlaying) {
@@ -81,13 +128,24 @@ const Navbar = ({ gameTitles = [] }) => {
   return (
     <div
       ref={navContainerRef}
+
+      className={`fixed inset-x-0 top-0 h-20 transition-all duration-700 sm:inset-x-6 z-50 ${
+        isNavVisible ? "floating-nav" : "floating-view"
+      }`}
+
       className="fixed inset-x-0 top-0 z-50 h-20 transition-all duration-700 sm:inset-x-6"
+
     >
       <header className="w-full">
         <nav className="flex items-center justify-between p-4">
           {/* Left Section */}
           <div className="flex items-center gap-7">
-            <img src="/img/logo.png" alt="logo" className="w-10" />
+            <img
+              src="/img/logo.png"
+              alt="logo"
+              className="w-10"
+              loading="lazy"
+            />
             <Button
               id="product-button"
               title="Products"
@@ -100,11 +158,27 @@ const Navbar = ({ gameTitles = [] }) => {
 
           {/* Right Section */}
           <div className="flex h-full items-center">
+
+            {/* Navigation Links */}
+            <div className="hidden md:flex items-center space-x-6">
+              {navItems.map((item, index) => (
+                <a
+  key={index}
+  href={item.path}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="nav-hover-btn"
+>
+  {item.label}
+</a>
+
+
             <div className="hidden items-center space-x-6 md:flex">
               {navItems.map((item, index) => (
                 <a key={index} href={item.href} className="nav-hover-btn">
                   {item.name}
                 </a>
+
               ))}
               <a href="#games-gallery" className="nav-hover-btn">
                 Games
@@ -113,6 +187,29 @@ const Navbar = ({ gameTitles = [] }) => {
                 Cart
               </a>
             </div>
+
+
+            {/* Audio Toggle Button */}
+            <button
+              className="ml-10 flex items-center space-x-0.5"
+              onClick={toggleAudioIndicator}
+              aria-label={
+                isAudioPlaying ? "Pause background audio" : "Play background audio"
+              }
+            >
+              <audio
+                ref={audioElementRef}
+                className="hidden"
+                src="/audio/loop.mp3"
+                loop
+              />
+              {[1, 2, 3, 4].map((bar) => (
+                <div
+                  key={bar}
+                  className={`indicator-line ${isIndicatorActive ? "active" : ""}`}
+                  style={{ animationDelay: `${bar * 0.1}s` }}
+                ></div>
+              ))}
 
             {/* Themed Audio Button with Custom SVG Icons */}
             <button
@@ -136,6 +233,7 @@ const Navbar = ({ gameTitles = [] }) => {
                   <VolumeOffIcon className="h-5 w-5 text-white" />
                 )}
               </span>
+
             </button>
             
             <audio
