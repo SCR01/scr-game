@@ -69,7 +69,9 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
         <div>
           <h1 className="bento-title special-font">{title}</h1>
           {description && (
-            <p className="mt-3 max-w-64 text-xs md:text-base">{description}</p>
+            <p className="mt-3 max-w-64 text-xs font-nippo-light md:text-base">
+              {description}
+            </p>
           )}
         </div>
 
@@ -102,10 +104,10 @@ const Features = () => (
   <section className="bg-black pb-52">
     <div className="container mx-auto px-3 md:px-10">
       <div className="px-5 py-32">
-        <p className="font-circular-web text-lg text-blue-50">
+        <p className="font-nippo-light text-[30px] text-blue-50">
           Into the Metagame Layer
         </p>
-        <p className="max-w-md font-circular-web text-lg text-blue-50 opacity-50">
+        <p className="max-w-md font-nippo-light text-[18px] text-blue-50 opacity-50">
           Immerse yourself in a rich and ever-expanding universe where a vibrant
           array of products converge into an interconnected overlay experience
           on your world.

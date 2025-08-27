@@ -1,3 +1,4 @@
+import { useState } from "react";
 import AnimatedTitle from "./AnimatedTitle";
 import Button from "./Button";
 
@@ -8,9 +9,12 @@ const ImageClipBox = ({ src, clipClass }) => (
 );
 
 const Contact = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div id="contact" className="my-20 min-h-96 w-screen px-10">
       <div className="relative rounded-lg bg-black py-24 text-blue-50 sm:overflow-hidden">
+        {/* Background Left Images */}
         <div className="absolute -left-20 top-0 hidden h-full w-72 overflow-hidden sm:block lg:left-20 lg:w-96">
           <ImageClipBox
             src="/img/contact-1.webp"
@@ -22,6 +26,7 @@ const Contact = () => {
           />
         </div>
 
+        {/* Background Right Images */}
         <div className="absolute -top-40 left-20 w-60 sm:top-1/2 md:left-auto md:right-10 lg:top-20 lg:w-80">
           <ImageClipBox
             src="/img/swordman-partial.webp"
@@ -33,23 +38,116 @@ const Contact = () => {
           />
         </div>
 
-        <div className="flex flex-col items-center text-center">
-          <p className="mb-10 font-general text-[10px] uppercase">
+        {/* Main Content */}
+        <div className="flex flex-col items-center text-center relative z-10">
+          <p className="mb-10 font-nippo-light text-[20px] uppercase tracking-wider">
             Join SCR Gaming
           </p>
 
-          <AnimatedTitle
-            title="let&#39;s b<b>u</b>ild the <br /> new era of <br /> g<b>a</b>ming t<b>o</b>gether."
-            className="special-font !md:text-[6.2rem] w-full font-zentry !text-5xl !font-black !leading-[.9]"
-          />
+          {/* Title */}
+          <div
+            className="mb-10 px-4"
+            style={{
+              textShadow:
+                "0 0 15px rgba(59, 130, 246, 0.4), 1px 1px 4px rgba(0, 0, 0, 0.7)",
+              filter: "drop-shadow(0 0 8px rgba(59, 130, 246, 0.3))",
+            }}
+          >
+            <AnimatedTitle
+              title="let&#39;s b<b>u</b>ild the <br /> n<b>e</b>w <b>e</b>ra of <br /> g<b>a</b>ming t<b>o</b>gether"
+              className="special-font !md:text-[5.8rem] w-full font-zentry !text-4xl !font-semibold !leading-[0.8] text-blue-50 tracking-tight"
+            />
+          </div>
 
-          {/* Cylindrical Button with Hover Effect */}
-          <Button
-            title="Contact Us"
-            containerClass="mt-6 bg-white text-black px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform"
-          />
+          {/* Contact Us Button */}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="mt-6 mb-12 bg-white text-black px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform font-semibold"
+          >
+            Contact Us
+          </button>
         </div>
       </div>
+
+      {/* Modal for Contact Form */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-gray-900/95 rounded-xl p-8 border border-gray-700 shadow-2xl max-w-md w-full relative">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
+            >
+              ×
+            </button>
+
+            <h3 className="text-2xl font-bold mb-6 text-center font-zentry text-white">
+              Get In T<span className="text-blue-400">o</span>uch
+            </h3>
+
+            {/* Contact Form */}
+            <form className="space-y-6">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-blue-50 mb-2"
+                >
+                  Gamer Tag / Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-blue-50 mb-2"
+                >
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="your.email@example.com"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-blue-50 mb-2"
+                >
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                  placeholder="Tell us about your gaming journey..."
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
