@@ -5,6 +5,8 @@ import { TiLocationArrow } from "react-icons/ti";
 import { useWindowScroll } from "react-use";
 import gsap from "gsap";
 import SearchBar from "./SearchBar";
+import Login from "./Login";
+import Profile from "./Profile";
 
 const navItems = [
   { name: "Nexus", href: "#about" },
@@ -47,7 +49,7 @@ const VolumeOffIcon = ({ className }) => (
   </svg>
 );
 
-const Navbar = ({ gameTitles = [] }) => {
+const Navbar = ({ gameTitles = [], user, setUser  }) => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const navContainerRef = useRef(null);
   const audioElementRef = useRef(null);
@@ -113,10 +115,13 @@ const Navbar = ({ gameTitles = [] }) => {
                 Cart
               </a>
             </div>
-
+                {/* Login/Profile Section */} 
+                <div className="ml-5"> 
+                  {!user ? ( <Login setUser={setUser} /> ) : ( <Profile user={user} setUser={setUser} /> )
+                  } </div>
             {/* Themed Audio Button with Custom SVG Icons */}
             <button
-              className="relative ml-10 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-black/30 backdrop-blur-sm transition-transform duration-300 ease-out hover:scale-110"
+              className="relative ml-6 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-black/30 backdrop-blur-sm transition-transform duration-300 ease-out hover:scale-110"
               onClick={toggleAudio}
               aria-label={isAudioPlaying ? "Pause background music" : "Play background music"}
               aria-pressed={isAudioPlaying}
