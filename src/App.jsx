@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import CursorTrail from './components/CursorTrail/CursorTrail';
 import CartWishlist from './components/CartWishlist';
 import { GameProvider } from './context/GameContext';
+import { AuthProvider } from './context/AuthContext';
 import OnTopBar from './components/OnTopBar';
 
 const App = () => {
@@ -76,75 +77,77 @@ const App = () => {
   ];
 
   const gameTitles = gamesData.map((game) => game.title);
- const [user, setUser] = useState(null);
+
   return (
-    <GameProvider>
-      <Toaster 
-        richColors 
-        position="top-right"
-        expand={true}
-        closeButton={true}
-        duration={5000}
-        className="font-nippo-light"
-        toastOptions={{
-          style: {
-            background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%)',
-            border: '2px solid rgba(255, 215, 0, 0.3)',
-            backdropFilter: 'blur(15px)',
-            borderRadius: '16px',
-            padding: '20px',
-            fontSize: '15px',
-            fontWeight: '600',
-            boxShadow: '0 0 30px rgba(255, 215, 0, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4)',
-            textShadow: '0 0 10px rgba(255, 255, 255, 0.3)',
-            letterSpacing: '0.5px',
-            minWidth: '320px',
-            maxWidth: '400px',
-          },
-          success: {
+    <AuthProvider>
+      <GameProvider>
+        <Toaster 
+          richColors 
+          position="top-right"
+          expand={true}
+          closeButton={true}
+          duration={5000}
+          className="font-nippo-light"
+          toastOptions={{
             style: {
-              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.95) 0%, rgba(22, 163, 74, 0.95) 100%)',
-              border: '2px solid rgba(34, 197, 94, 0.5)',
-              boxShadow: '0 0 30px rgba(34, 197, 94, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4)',
-              color: 'white',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+              background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%)',
+              border: '2px solid rgba(255, 215, 0, 0.3)',
+              backdropFilter: 'blur(15px)',
+              borderRadius: '16px',
+              padding: '20px',
+              fontSize: '15px',
+              fontWeight: '600',
+              boxShadow: '0 0 30px rgba(255, 215, 0, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4)',
+              textShadow: '0 0 10px rgba(255, 255, 255, 0.3)',
+              letterSpacing: '0.5px',
+              minWidth: '320px',
+              maxWidth: '400px',
             },
-            iconTheme: {
-              primary: 'white',
-              secondary: 'rgba(34, 197, 94, 0.9)',
+            success: {
+              style: {
+                background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.95) 0%, rgba(22, 163, 74, 0.95) 100%)',
+                border: '2px solid rgba(34, 197, 94, 0.5)',
+                boxShadow: '0 0 30px rgba(34, 197, 94, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4)',
+                color: 'white',
+                textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+              },
+              iconTheme: {
+                primary: 'white',
+                secondary: 'rgba(34, 197, 94, 0.9)',
+              },
             },
-          },
-          error: {
-            style: {
-              background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%)',
-              border: '2px solid rgba(239, 68, 68, 0.5)',
-              boxShadow: '0 0 30px rgba(239, 68, 68, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4)',
-              color: 'white',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+            error: {
+              style: {
+                background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%)',
+                border: '2px solid rgba(239, 68, 68, 0.5)',
+                boxShadow: '0 0 30px rgba(239, 68, 68, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4)',
+                color: 'white',
+                textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+              },
+              iconTheme: {
+                primary: 'white',
+                secondary: 'rgba(239, 68, 68, 0.9)',
+              },
             },
-            iconTheme: {
-              primary: 'white',
-              secondary: 'rgba(239, 68, 68, 0.9)',
-            },
-          },
-        }}
-      />
-      <main className="relative min-h-screen w-screen overflow-x-hidden">
-        <CursorTrail />
-        <Navbar gameTitles={gameTitles} user={user} setUser={setUser} />
-        <Hero />
-        <About />
-        <Features />
-        <GamesGallery gamesData={gamesData} />
-        <Story />
-        <div className="mb-32">
-          <CartWishlist />
-        </div>
-        <Contact />
-        <Footer />
-        <OnTopBar />
-      </main>
-    </GameProvider>
+          }}
+        />
+        <main className="relative min-h-screen w-screen overflow-x-hidden">
+          <CursorTrail />
+          <Navbar gameTitles={gameTitles} />
+          <Hero />
+          <About />
+          <Features />
+          <GamesGallery gamesData={gamesData} />
+          <Story />
+          <div className="mb-32">
+            <CartWishlist />
+          </div>
+          <Contact />
+          <Footer />
+          <OnTopBar />
+        </main>
+      </GameProvider>
+    </AuthProvider>
   );
 };
 
