@@ -2,14 +2,15 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+  apiKey: "AIzaSyDm0XBt8KnA41Ixvpayl1zDo503U-iVvio",
+  authDomain: "scr-game-f461a.firebaseapp.com",
+  projectId: "scr-game-f461a",
+  storageBucket: "scr-game-f461a.firebasestorage.app",
+  messagingSenderId: "68172717916",
+  appId: "1:68172717916:web:062bdd2c227441cd3eab99",
+  measurementId: "G-8KXHE64TXV"
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
