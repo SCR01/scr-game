@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import { Toaster } from 'sonner';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -14,6 +14,7 @@ import { GameProvider } from './context/GameContext';
 import OnTopBar from './components/OnTopBar';
 
 const App = () => {
+  
   // Centralize the gamesData here
   const gamesData = [
     {
@@ -75,7 +76,7 @@ const App = () => {
   ];
 
   const gameTitles = gamesData.map((game) => game.title);
-
+ const [user, setUser] = useState(null);
   return (
     <GameProvider>
       <Toaster 
@@ -130,7 +131,7 @@ const App = () => {
       />
       <main className="relative min-h-screen w-screen overflow-x-hidden">
         <CursorTrail />
-        <Navbar gameTitles={gameTitles} />
+        <Navbar gameTitles={gameTitles} user={user} setUser={setUser} />
         <Hero />
         <About />
         <Features />
