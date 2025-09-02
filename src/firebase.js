@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDm0XBt8KnA41Ixvpayl1zDo503U-iVvio",
   authDomain: "scr-game-f461a.firebaseapp.com",
   projectId: "scr-game-f461a",
-  storageBucket: "scr-game-f461a.appspot.com",
+  storageBucket: "scr-game-f461a.firebasestorage.app",
   messagingSenderId: "68172717916",
   appId: "1:68172717916:web:062bdd2c227441cd3eab99",
   measurementId: "G-8KXHE64TXV"
