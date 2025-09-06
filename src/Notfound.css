@@ -1,0 +1,9 @@
+/* Force cursor visible on 404 page */
+.notfound-cursor-fix {
+  cursor: auto !important; /* shows normal arrow */
+}
+
+/* Make sure buttons show pointer */
+.notfound-cursor-fix button {
+  cursor: pointer !important;
+}

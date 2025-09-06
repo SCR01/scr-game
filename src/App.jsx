@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -10,6 +11,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CursorTrail from './components/CursorTrail/CursorTrail';
 import CartWishlist from './components/CartWishlist';
+import NotFound from './components/NotFound';
 import { GameProvider } from './context/GameContext';
 import { AuthProvider } from './context/AuthContext';
 import OnTopBar from './components/OnTopBar';
@@ -131,21 +133,26 @@ const App = () => {
             },
           }}
         />
-        <main className="relative min-h-screen w-screen overflow-x-hidden">
-          <CursorTrail />
-          <Navbar gameTitles={gameTitles} />
-          <Hero />
-          <About />
-          <Features />
-          <GamesGallery gamesData={gamesData} />
-          <Story />
-          <div className="mb-32">
-            <CartWishlist />
-          </div>
-          <Contact />
-          <Footer />
-          <OnTopBar />
-        </main>
+        <Routes>
+          <Route path="/" element={
+            <main className="relative min-h-screen w-screen overflow-x-hidden">
+              <CursorTrail />
+              <Navbar gameTitles={gameTitles} />
+              <Hero />
+              <About />
+              <Features />
+              <GamesGallery gamesData={gamesData} />
+              <Story />
+              <div className="mb-32">
+                <CartWishlist />
+              </div>
+              <Contact />
+              <Footer />
+              <OnTopBar />
+            </main>
+          } />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </GameProvider>
     </AuthProvider>
   );
