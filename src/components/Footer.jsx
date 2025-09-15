@@ -2,6 +2,7 @@ import { FaLinkedin, FaGithub, FaTwitter, FaGlobe, FaEnvelope } from "react-icon
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { FaXTwitter } from "react-icons/fa6";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -9,7 +10,7 @@ const socialLinks = [
   { href: "https://www.linkedin.com/in/sharad-chandra-reddy-b0737a231/", icon: <FaLinkedin /> },
   { href: "https://github.com/SCR01", icon: <FaGithub /> },
   { href: "https://portfolio-scr.vercel.app/", icon: <FaGlobe /> },
-  { href: "https://x.com/home", icon: <FaTwitter /> },
+  { href: "https://x.com/home", icon: <FaXTwitter /> },
   { href: "mailto:scr.contact@email.com", icon: <FaEnvelope /> },
 ];
 
