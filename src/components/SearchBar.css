@@ -12,6 +12,7 @@
   margin-left: 1rem;
 }
 
+
 .search-title {
   color: #00f0ff;
   text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
@@ -132,6 +133,17 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+ /* Added the Custom media query for responsiveness  */
+@media (max-width:500px){
+  .navbar-search {
+  width: auto;
+  margin-left: 0rem;
+}
+.search-wrapper {
+  width: 80%;
+}
+
 }
 
 @media (max-width: 600px) {
