@@ -503,7 +503,11 @@ const CartWishlist = () => {
   });
 
   return (
-    <section id="cart-wishlist" className="bg-yellow-75 py-20 md:py-32 min-h-screen relative">
+    <section
+  id="cart-wishlist"
+  className="bg-yellow-75 pt-20 pb-10 relative h-auto min-h-0"
+>
+
       <div className="container mx-auto px-5 md:px-10">
         {/* Header with Navigation */}
         <div className="cart-wishlist-title mb-16">
