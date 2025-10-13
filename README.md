@@ -8,6 +8,7 @@
 - [📌 Introduction](#-introduction)
 - [⚙️ Tech Stack](#️-tech-stack)
 - [🔥 Features](#-features)
+- [📁 Project Structure](#-Project-Structure)
 - [📊 Project Stats](#-project-stats)
 - [🚀 Getting Started (Local Setup)](#-getting-started-local-setup)
   - [**Prerequisites**](#prerequisites)
@@ -46,6 +47,71 @@
 ✅ **Fast & Lightweight** – Optimized with Vite for high performance.
 ✅ **Responsive Design** – Optimized for all screen sizes.
 ✅ **SEO Optimized** – Ensures better search engine visibility.
+
+---
+
+## 📁 Project Structure
+
+```bash
+scr-game/            
+├── .github/
+│       ├── ISSUE_TEMPLATE/                   
+│       └── PULL_REQUEST_TEMPLATE.md                 
+├── docs/
+│      ├── animations.md
+│      ├── contact.md
+│      ├── contributing.md
+│      ├── features.md
+│      ├── index.md
+│      ├── installation.md
+│      ├── introduction.md
+│      ├── license.md
+│      ├── tech-stack.md
+│      ├── troubleshooting.md
+│      └── usage.md       
+├── public/
+│     ├── audio/
+│     ├── fonts/
+│     ├── img/
+│     ├── videos/
+│     └── vite.svg  
+├── src/ 
+│     ├── components/
+│       │     ├── CursorTrail/
+│       │     ├── About.jsx
+│       │     ├── Button.jsx
+│       │     ├── CartWishlist.jsx
+│       │     ├── Contact.jsx
+│       │     ├── Features.jsx
+│       │     ├── Footer.jsx
+│       │     ├── GamesGallery.jsx
+│       │     ├── Hero.jsx
+│       │     ├── Navbar.jsx
+│       │     ├── OnTopBar.jsx
+│       │     ├── RoundedCorners.jsx
+│       │     ├── Story.jsx
+│       │     └── VideoPreview.jsx 
+│     ├── context/
+│             └── GameContext.jsx/ 
+│     ├── App.jsx    
+│     ├── index.css       
+│     └── main.jsx
+│     └── views.py                                            
+├── CODE_OF_CONDUCT.md            
+├── LICENSE                
+├── README.MD                   
+├── SECURITY.md                         
+├── eslint.config.js 
+├── index.html          
+├── originalread.md
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js                        
+└── vite.config.js            
+          
+
+```
 
 ---
 
