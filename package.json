@@ -38,5 +38,12 @@
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
     "vite": "^6.0.1"
-  }
+  },
+  "description": "🌟 **Live Demo:** 👉 [SCR Gaming](https://scrgaming.vercel.app/)",
+  "main": "eslint.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "author": "",
+  "license": "ISC"
 }
